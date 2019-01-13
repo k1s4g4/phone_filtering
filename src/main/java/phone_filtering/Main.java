@@ -1,7 +1,10 @@
 package phone_filtering;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import phone_filtering.model.tree.AmbiguityTree;
 import phone_filtering.tools.Separator;
 import phone_filtering.tools.Validator;
 
@@ -18,6 +21,8 @@ public class Main {
 			printDirectionsForValidInput();
 		}
 		sc.close();
+		
+		
 	}
 	
 	private static String getInput() {

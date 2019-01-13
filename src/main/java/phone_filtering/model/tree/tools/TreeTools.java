@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import phone_filtering.model.tree.Node;
 
-public class TreePaths {
+public class TreeTools {
     private static List<List<Node<String>>> getPaths0(Node<String> pos) {
         List<List<Node<String>>> retLists = new ArrayList<>();
 
@@ -33,5 +35,22 @@ public class TreePaths {
         } else {
             return getPaths0(head);
         }
+    }
+    
+    
+    public static void addToLeafs(Node<String> node,List<Node<String>> children) {
+    	
+    	if(node.getChildren().isEmpty()) {
+    		List<Node<String>> copyOfChildren=new ArrayList<>();
+        	for(Node<String> child:children) {
+        		copyOfChildren.add(new Node<String>(child.getData()));
+        	}
+    		node.addChildren(copyOfChildren);
+    	}else {
+    		
+    		for(Node<String> nodeChild:node.getChildren()) {
+    			addToLeafs(nodeChild,children);
+    		}
+    	}
     }
 }
