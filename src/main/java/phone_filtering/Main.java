@@ -2,6 +2,7 @@ package phone_filtering;
 
 import java.util.Scanner;
 
+import phone_filtering.tools.Separator;
 import phone_filtering.tools.Validator;
 
 public class Main {
@@ -9,13 +10,13 @@ public class Main {
 	private static String input;
 	
 	public static void main(String[] args) {
+		
+		
 		sc=new Scanner(System.in);
 		
-		while(!Validator.inputIsValid(input=getInput())) {
+		while(!Validator.inputIsValid(input=getInput().trim())) {
 			printDirectionsForValidInput();
 		}
-		
-		System.out.println("Your input number is: "+input);
 		sc.close();
 	}
 	
