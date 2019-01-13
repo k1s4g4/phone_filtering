@@ -20,6 +20,7 @@ public class AmbiguityTree {
 	private void buildTree(List<String> parts) {
 		int partsLength;
 		while((partsLength=parts.size())>0) {
+			
 			String currentPart=parts.get(0);
 			int partLength=currentPart.length();
 			List<Node<String>> children=new ArrayList<>();
@@ -28,7 +29,6 @@ public class AmbiguityTree {
 				children.add(new Node<String>(currentPart));
 				parts.remove(0);
 			}else if(partLength==2){
-				
 				if(currentPart.charAt(1)=='0') {
 					if(partsLength>1) {
 						String nextPart=parts.get(1);
@@ -54,6 +54,7 @@ public class AmbiguityTree {
 						}
 					}else {
 						children.add(new Node<String>(currentPart));
+						parts.remove(0);
 					}
 				}else {
 					if(currentPart.equals("11") || currentPart.equals("12")) {
@@ -90,8 +91,8 @@ public class AmbiguityTree {
 												parts.remove(0);
 											}else {
 												if(nextPartTens.equals("1") && afterNextPart.equals("1") || afterNextPart.equals("2")) {
-													children.add(new Node<String>(hundreds+"00"+nextPartTens+afterNextPart));
-													children.add(new Node<String>(hundreds+nextPartTens+afterNextPart));
+													children.add(new Node<String>(hundreds+"00"+nextPartTens+"0"+afterNextPart));
+													children.add(new Node<String>(hundreds+nextPartTens+"0"+afterNextPart));
 													parts.remove(0);
 													parts.remove(0);
 													parts.remove(0);
@@ -145,20 +146,27 @@ public class AmbiguityTree {
 									}
 								}
 							}
+						}else {
+							children.add(new Node<String>(currentPart));
+							parts.remove(0);
 						}
 					}else {
 						if(partsLength>1) {
 							String nextPart=parts.get(1);
 							if(nextPart.length()>1) {
-								children.add(new Node<String>(currentPart));
+								children.add(new Node<String>(hundreds+"00"+tens+"0"));
+								children.add(new Node<String>(hundreds+tens+"0"));
 								parts.remove(0);
 							}else {
 								if(tens.equals("1") && nextPart.equals("1") || nextPart.equals("2")){
-									children.add(new Node<String>(currentPart));
+									children.add(new Node<String>(hundreds+"00"+tens+"0"));
+									children.add(new Node<String>(hundreds+tens+"0"));
 									parts.remove(0);
 								}else {
+									children.add(new Node<String>(hundreds+"00"+tens+"0"+nextPart));
+									children.add(new Node<String>(hundreds+"00"+tens+nextPart));
 									children.add(new Node<String>(hundreds+tens+"0"+nextPart));
-									children.add(new Node<String>(hundreds+tens+"0"+nextPart));
+									children.add(new Node<String>(hundreds+tens+nextPart));
 									parts.remove(0);
 									parts.remove(0);
 								}

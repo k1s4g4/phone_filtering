@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import phone_filtering.model.tree.Node;
 
@@ -52,5 +51,17 @@ public class TreeTools {
     			addToLeafs(nodeChild,children);
     		}
     	}
+    }
+    
+    public static List<String> pathsToList(List<List<Node<String>>> paths) {
+    	List<String> stringPaths=new ArrayList<>();
+    	for(List<Node<String>> path:paths) {
+    		StringBuilder temp=new StringBuilder();
+    		for(Node<String> node:path) {
+    			temp.append(node.getData());
+    		}
+    		stringPaths.add(temp.toString());
+    	}
+    	return stringPaths;
     }
 }
