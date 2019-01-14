@@ -32,7 +32,7 @@ public class AmbiguityHandler {
 			if(partsLength>1) {
 				String nextPart=parts.get(1);
 				if(		!(nextPart.length()>1) &&
-						!(currentPart.equals("10") && nextPart.equals("1") || nextPart.equals("2")) && 
+						!(currentPart.equals("10") && (nextPart.equals("1") || nextPart.equals("2"))) && 
 						!(nextPart.equals("0"))) 
 				{
 					add(children,
@@ -79,7 +79,7 @@ public class AmbiguityHandler {
 								if(partsLength>2) {
 									Part afterNext=new Part(parts.get(2));
 									boolean nextOverOneDigit=!afterNext.one;
-									boolean elevenTwelve=next.tens.equals("1") && afterNext.full().equals("1") || afterNext.full().equals("2");
+									boolean elevenTwelve=next.tens.equals("1") && (afterNext.full().equals("1") || afterNext.full().equals("2"));
 									boolean afterNextZero=afterNext.full().equals("0");
 									if(!elevenTwelve && !afterNextZero && !nextOverOneDigit) {
 										add(children,

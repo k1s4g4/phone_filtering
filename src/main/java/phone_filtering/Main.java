@@ -3,6 +3,7 @@ package phone_filtering;
 import java.util.Scanner;
 
 import phone_filtering.model.TelephoneNumber;
+import phone_filtering.tools.Output;
 import phone_filtering.tools.Validator;
 
 public class Main {
@@ -10,22 +11,18 @@ public class Main {
 	private static String input;
 	
 	public static void main(String[] args) {
-		
-		
 		sc=new Scanner(System.in);
 		
 		while(!Validator.inputIsValid(input=getInput().trim())) {
 			printDirectionsForValidInput();
 		}
 		TelephoneNumber telNo=new TelephoneNumber(input);
-		
-		telNo.getNumberList().forEach(s->System.out.println(s));
-		
+		Output.printPossibleNumbers(telNo.getPossibleNumbers());
 		
 		sc.close();
-		
-		
 	}
+	
+	
 	
 	private static String getInput() {
 		System.out.println("Please enter a telephone number:");

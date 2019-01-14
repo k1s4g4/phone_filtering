@@ -8,6 +8,7 @@ import java.util.List;
 import phone_filtering.model.tree.Node;
 
 public class TreeTools {
+	
     private static List<List<Node<String>>> getPaths0(Node<String> pos) {
         List<List<Node<String>>> retLists = new ArrayList<>();
 

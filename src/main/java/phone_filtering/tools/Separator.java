@@ -1,10 +1,14 @@
 package phone_filtering.tools;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Separator {
+	
+	public static List<String> separate(String input) {
+		return Separator.inputToParts(Separator.separateZeros(input));
+	}
+	
 	// Check for existence of zero at hundreds or decades position 
 	// and separates zero with the rest of the number with a space
 	public static String separateZeros(String input) {

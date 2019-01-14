@@ -25,7 +25,7 @@ public class PossibleNumber {
 	}
 	
 	public String toString() {
-		return this.getValue()+" "+(valid?"VALID":"INVALID");
+		return this.getValue()+"\t"+"[phone number: "+(valid?"VALID":"INVALID")+"]";
 	}
 	
 }
