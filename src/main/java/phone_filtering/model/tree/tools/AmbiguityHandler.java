@@ -7,14 +7,24 @@ import phone_filtering.model.tree.Node;
 
 public class AmbiguityHandler {
 	
-	public static List<Node<String>> oneDigit(List<String> parts) {
+	public static List<Node<String>> handle(List<String> parts,int digits) {
+		if(digits==1) {
+			return oneDigit(parts);
+		}else if(digits==2) {
+			return twoDigit(parts);
+		}else {
+			return threeDigit(parts);
+		}
+	}
+	
+	private static List<Node<String>> oneDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
 		add(children,parts.get(0));
 		remove(parts,1);
 		return children;
 	}
 	
-	public static List<Node<String>> twoDigit(List<String> parts) {
+	private static List<Node<String>> twoDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
 		String currentPart=parts.get(0);
 		int partsLength=parts.size();
@@ -52,116 +62,111 @@ public class AmbiguityHandler {
 		return children;
 	}
 	
-	public static List<Node<String>> threeDigit(List<String> parts) {
+	private static List<Node<String>> threeDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
-		String currentPart=parts.get(0);
-		String hundreds=currentPart.substring(0,1);
-		String tens=currentPart.substring(1,2);
-		String units=currentPart.substring(2,3);
+		Part current=new Part(parts.get(0));
 		int partsLength=parts.size();
-		if(units.equals("0")) {
-			if(tens.equals("0")) {
+		if(current.units.equals("0")) {
+			if(current.tens.equals("0")) {
 				if(partsLength>1) {
-					String nextPart=parts.get(1);
-					if(nextPart.length()>2) {
-						add(children,currentPart);
+					Part next=new Part(parts.get(1));
+					if(next.three) {
+						add(children,current.full());
 						remove(parts,1);
 					}else {
-						if(nextPart.length()>1) {
-							String nextPartUnits=nextPart.substring(1, 2);
-							String nextPartTens=nextPart.substring(0, 1);
-							if(nextPartUnits.equals("0")) {
+						if(!next.one) {
+							if(next.units.equals("0")) {
 								if(partsLength>2) {
-									String afterNextPart=parts.get(2);
-									boolean nextOverOneDigit=afterNextPart.length()>1;
-									boolean elevenTwelve=nextPartTens.equals("1") && afterNextPart.equals("1") || afterNextPart.equals("2");
-									boolean afterNextZero=afterNextPart.equals("0");
+									Part afterNext=new Part(parts.get(2));
+									boolean nextOverOneDigit=!afterNext.one;
+									boolean elevenTwelve=next.tens.equals("1") && afterNext.full().equals("1") || afterNext.full().equals("2");
+									boolean afterNextZero=afterNext.full().equals("0");
 									if(!elevenTwelve && !afterNextZero && !nextOverOneDigit) {
 										add(children,
-												hundreds+"00"+nextPartTens+"0"+afterNextPart,
-												hundreds+"00"+nextPartTens+afterNextPart,
-												hundreds+nextPartTens+"0"+afterNextPart,
-												hundreds+nextPartTens+afterNextPart);
+												current.hundreds+"00"+next.tens+"0"+afterNext.full(),
+												current.hundreds+"00"+next.tens+afterNext.full(),
+												current.hundreds+next.tens+"0"+afterNext.full(),
+												current.hundreds+next.tens+afterNext.full());
 										remove(parts,3);
 									}else {
 										add(children,
-												hundreds+"00"+nextPartTens+"0"+(nextOverOneDigit?"":afterNextPart),
-												hundreds+nextPartTens+"0"+(nextOverOneDigit?"":afterNextPart));
+												current.hundreds+"00"+next.tens+"0"+(nextOverOneDigit?"":afterNext.full()),
+												current.hundreds+next.tens+"0"+(nextOverOneDigit?"":afterNext.full()));
 										remove(parts,2);
 										if(!nextOverOneDigit)remove(parts,1);
 									}
 								}else {
 									add(children,
-											hundreds+nextPartTens+"0",
-											hundreds+"00"+nextPartTens+"0");
+											current.hundreds+next.tens+"0",
+											current.hundreds+"00"+next.tens+"0");
 									remove(parts,2);
 								}
 							}else {
-								if(nextPart.equals("11") || nextPart.equals("12")) {
+								if(next.full().equals("11") || next.full().equals("12")) {
 									add(children,
-											hundreds+"00"+nextPart,
-											hundreds+nextPart);
+											current.hundreds+"00"+next.full(),
+											current.hundreds+next.full());
 									remove(parts,2);
 								}else {
 									add(children,
-											hundreds+"00"+nextPartTens+"0"+nextPartUnits,
-											hundreds+"00"+nextPartTens+nextPartUnits,
-											hundreds+nextPartTens+"0"+nextPartUnits,
-											hundreds+nextPartTens+nextPartUnits);
+											current.hundreds+"00"+next.tens+"0"+next.units,
+											current.hundreds+"00"+next.tens+next.units,
+											current.hundreds+next.tens+"0"+next.units,
+											current.hundreds+next.tens+next.units);
 									remove(parts,2);
 								}
 							}
 						}else {
-							if(nextPart.equals("0")) {
-								add(children,currentPart);
+							if(next.full().equals("0")) {
+								add(children,current.full());
 								remove(parts,1);
 							}else {
 								add(children,
-										hundreds+tens+"0"+nextPart,
-										hundreds+tens+nextPart);
+										current.hundreds+current.tens+"0"+next.full(),
+										current.hundreds+current.tens+next.full());
 								remove(parts,2);
 							}
 						}
 					}
 				}else {
-					add(children,currentPart);
+					add(children,current.full());
 					remove(parts,1);
 				}
 			}else {
 				if(partsLength>1) {
-					String nextPart=parts.get(1);
-					if( !(nextPart.length()>1) && !(tens.equals("1") && nextPart.equals("1") || nextPart.equals("2"))) {
+					Part next=new Part(parts.get(1));
+					if( !(next.full().length()>1) && !(current.tens.equals("1") && next.full().equals("1") || next.full().equals("2"))) {
 						add(children,
-								hundreds+"00"+tens+"0"+nextPart,
-								hundreds+"00"+tens+nextPart,
-								hundreds+tens+"0"+nextPart,
-								hundreds+tens+nextPart);
+								current.hundreds+"00"+current.tens+"0"+next.full(),
+								current.hundreds+"00"+current.tens+next.full(),
+								current.hundreds+current.tens+"0"+next.full(),
+								current.hundreds+current.tens+next.full());
 						remove(parts,2);
 					}else {
 						add(children,
-								hundreds+"00"+tens+"0",
-								hundreds+tens+"0");
+								current.hundreds+"00"+current.tens+"0",
+								current.hundreds+current.tens+"0");
 						remove(parts,1);
 					}
 				}else {
-					add(children,currentPart);
+					add(children,current.full());
 					remove(parts,1);
 				}
 			}
 		}else {
-			boolean zeroTens=tens.equals("0");
-			boolean elevenTwelve=currentPart.substring(1,3).equals("11") || currentPart.substring(1,3).equals("12");
+			boolean zeroTens=current.tens.equals("0");
+			boolean elevenTwelve=current.full().substring(1,3).equals("11") || current.full().substring(1,3).equals("12");
 			if( !zeroTens && !elevenTwelve ){
 				add(children,
-						hundreds+"00"+tens+"0"+units,
-						hundreds+"00"+tens+units,
-						hundreds+tens+"0"+units,
-						currentPart);
+						current.hundreds+"00"+current.tens+"0"+current.units,
+						current.hundreds+"00"+current.tens+current.units,
+						current.hundreds+current.tens+"0"+current.units,
+						current.full());
 				remove(parts,1);
 			}else {
 				add(children,
-						currentPart,
-						hundreds+(zeroTens?"":"00")+tens+(elevenTwelve?"":"0")+units);
+						current.full(),
+						current.hundreds+(zeroTens?"":"00")+current.tens+(elevenTwelve?"":"0")+current.units);
 				remove(parts,1);
 			}
 		}
@@ -177,8 +182,39 @@ public class AmbiguityHandler {
 	}
 	private static void remove(List<String> parts,int removeAmount) {
 		for(int i=0; i<removeAmount; i++) {
+			parts.size();
 			parts.remove(0);
 		}
 	}
 	
+}
+class Part{
+	boolean one;
+	boolean two;
+	boolean three;
+	String hundreds;
+	String tens;
+	String units;
+	Part(String part) {
+		if(part.length()==3) {
+			three=true;
+			hundreds=part.substring(0, 1);
+			tens=part.substring(1, 2);
+			units=part.substring(2,3);
+		}else if(part.length()==2) {
+			two=true;
+			hundreds="";
+			tens=part.substring(0, 1);
+			units=part.substring(1,2);
+		}else {
+			one=true;
+			hundreds="";
+			tens="";
+			units=part.substring(0,1);
+		}
+	}
+	
+	String full() {
+		return hundreds+tens+units;
+	}
 }

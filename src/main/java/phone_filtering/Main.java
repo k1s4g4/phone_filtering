@@ -1,11 +1,8 @@
 package phone_filtering;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import phone_filtering.model.tree.AmbiguityTree;
-import phone_filtering.tools.Separator;
+import phone_filtering.model.TelephoneNumber;
 import phone_filtering.tools.Validator;
 
 public class Main {
@@ -20,6 +17,11 @@ public class Main {
 		while(!Validator.inputIsValid(input=getInput().trim())) {
 			printDirectionsForValidInput();
 		}
+		TelephoneNumber telNo=new TelephoneNumber(input);
+		
+		telNo.getNumberList().forEach(s->System.out.println(s));
+		
+		
 		sc.close();
 		
 		

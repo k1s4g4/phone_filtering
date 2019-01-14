@@ -11,7 +11,6 @@ public class AmbiguityTree {
 	private List<List<Node<String>>> paths;
 	
 	public AmbiguityTree(List<String> parts) {
-		//generate tree from parts
 		root=new Node<String>("");
 		buildTree(parts);
 		paths=TreeTools.getPaths(root);
@@ -21,16 +20,9 @@ public class AmbiguityTree {
 		@SuppressWarnings("unused")
 		int partsLength;
 		while((partsLength=parts.size())>0) {
-			String currentPart=parts.get(0);
-			int partLength=currentPart.length();
+			int partLength=parts.get(0).length();
 			List<Node<String>> children=new ArrayList<>();
-			if(partLength==1) {
-				children=AmbiguityHandler.oneDigit(parts);
-			}else if(partLength==2){
-				children=AmbiguityHandler.twoDigit(parts);
-			}else {
-				children=AmbiguityHandler.threeDigit(parts);
-			}
+			children=AmbiguityHandler.handle(parts,partLength);
 			TreeTools.addToLeafs(root, children);
 		}
 	}
@@ -49,6 +41,10 @@ public class AmbiguityTree {
 
 	public void setPaths(List<List<Node<String>>> paths) {
 		this.paths = paths;
+	}
+	
+	public List<String> getPathList() {
+		return TreeTools.pathsToList(paths);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package phone_filtering.tools;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class Separator {
 	
 	// Takes the "zero"-separated input and 
 	public static List<String> inputToParts(String input){
-		return Arrays.asList(input.split("\\s"));
+		String[] array=input.split("\\s");
+		List<String> parts=new ArrayList<String>();
+		for(String part:array) {
+			parts.add(part);
+		}
+		return parts;
 	}
 }

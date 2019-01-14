@@ -10,4 +10,20 @@ public class Validator {
 		}
 		return false;
 	}
+	
+	public static boolean numberIsValid(String number) {
+			boolean valid=false;
+			if(number.length()==14) {
+				if(number.substring(0, 4).equals("0030")){
+					if(number.substring(4,5).equals("2") || number.substring(4,6).equals("69")) {
+						valid=true;
+					}
+				}
+			}else if(number.length()==10) {
+				if(number.substring(0,1).equals("2") || number.substring(0,2).equals("69")) {
+					valid=true;
+				}
+			}
+			return valid;
+	}
 }
