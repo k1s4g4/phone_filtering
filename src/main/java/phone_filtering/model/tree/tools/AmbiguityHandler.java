@@ -73,32 +73,22 @@ public class AmbiguityHandler {
 							if(nextPartUnits.equals("0")) {
 								if(partsLength>2) {
 									String afterNextPart=parts.get(2);
-									if(afterNextPart.length()>1) {
+									boolean nextOverOneDigit=afterNextPart.length()>1;
+									boolean elevenTwelve=nextPartTens.equals("1") && afterNextPart.equals("1") || afterNextPart.equals("2");
+									boolean afterNextZero=afterNextPart.equals("0");
+									if(!elevenTwelve && !afterNextZero && !nextOverOneDigit) {
 										add(children,
-												hundreds+nextPartTens+"0",
-												hundreds+"00"+nextPartTens+"0");
-										remove(parts,2);
+												hundreds+"00"+nextPartTens+"0"+afterNextPart,
+												hundreds+"00"+nextPartTens+afterNextPart,
+												hundreds+nextPartTens+"0"+afterNextPart,
+												hundreds+nextPartTens+afterNextPart);
+										remove(parts,3);
 									}else {
-										if(nextPartTens.equals("1") && afterNextPart.equals("1") || afterNextPart.equals("2")) {
-											add(children,
-													hundreds+"00"+nextPartTens+"0"+afterNextPart,
-													hundreds+nextPartTens+"0"+afterNextPart);
-											remove(parts,3);
-										}else {
-											if(afterNextPart.equals("0")) {
-												add(children,
-														hundreds+nextPartTens+"0",
-														hundreds+"00"+nextPartTens+"0");
-												remove(parts,2);
-											}else {
-												add(children,
-														hundreds+"00"+nextPartTens+"0"+afterNextPart,
-														hundreds+"00"+nextPartTens+afterNextPart,
-														hundreds+nextPartTens+"0"+afterNextPart,
-														hundreds+nextPartTens+afterNextPart);
-												remove(parts,3);
-											}
-										}
+										add(children,
+												hundreds+"00"+nextPartTens+"0"+(nextOverOneDigit?"":afterNextPart),
+												hundreds+nextPartTens+"0"+(nextOverOneDigit?"":afterNextPart));
+										remove(parts,2);
+										if(!nextOverOneDigit)remove(parts,1);
 									}
 								}else {
 									add(children,
@@ -140,25 +130,18 @@ public class AmbiguityHandler {
 			}else {
 				if(partsLength>1) {
 					String nextPart=parts.get(1);
-					if(nextPart.length()>1) {
+					if( !(nextPart.length()>1) && !(tens.equals("1") && nextPart.equals("1") || nextPart.equals("2"))) {
+						add(children,
+								hundreds+"00"+tens+"0"+nextPart,
+								hundreds+"00"+tens+nextPart,
+								hundreds+tens+"0"+nextPart,
+								hundreds+tens+nextPart);
+						remove(parts,2);
+					}else {
 						add(children,
 								hundreds+"00"+tens+"0",
 								hundreds+tens+"0");
 						remove(parts,1);
-					}else {
-						if(tens.equals("1") && nextPart.equals("1") || nextPart.equals("2")){
-							add(children,
-									hundreds+"00"+tens+"0",
-									hundreds+tens+"0");
-							remove(parts,1);
-						}else {
-							add(children,
-									hundreds+"00"+tens+"0"+nextPart,
-									hundreds+"00"+tens+nextPart,
-									hundreds+tens+"0"+nextPart,
-									hundreds+tens+nextPart);
-							remove(parts,2);
-						}
 					}
 				}else {
 					add(children,currentPart);
@@ -166,25 +149,20 @@ public class AmbiguityHandler {
 				}
 			}
 		}else {
-			if(tens.equals("0")) {
+			boolean zeroTens=tens.equals("0");
+			boolean elevenTwelve=currentPart.substring(1,3).equals("11") || currentPart.substring(1,3).equals("12");
+			if( !zeroTens && !elevenTwelve ){
 				add(children,
-						currentPart,
-						hundreds+tens+"0"+units);
+						hundreds+"00"+tens+"0"+units,
+						hundreds+"00"+tens+units,
+						hundreds+tens+"0"+units,
+						currentPart);
 				remove(parts,1);
 			}else {
-				if(currentPart.substring(1,3).equals("11") || currentPart.substring(1,3).equals("12")) {
-					add(children,
-							hundreds+"00"+tens+units,
-							currentPart);
-					remove(parts,1);
-				}else {
-					add(children,
-							hundreds+"00"+tens+"0"+units,
-							hundreds+"00"+tens+units,
-							hundreds+tens+"0"+units,
-							currentPart);
-					remove(parts,1);
-				}
+				add(children,
+						currentPart,
+						hundreds+(zeroTens?"":"00")+tens+(elevenTwelve?"":"0")+units);
+				remove(parts,1);
 			}
 		}
 

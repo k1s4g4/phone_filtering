@@ -88,14 +88,14 @@ public class AmbiguityTreeTest {
 	@Test
 	public void testThreeDigitEleven() {
 		AmbiguityTree tree=new AmbiguityTree(list("211"));
-		assertEquals(list("20011","211"),TreeTools.pathsToList(tree.getPaths()));
+		assertEquals(list("211","20011"),TreeTools.pathsToList(tree.getPaths()));
 	}
 	
 	//Testing 3 digit number with 11 at the end
 	@Test
 	public void testThreeDigitTwelve() {
 		AmbiguityTree tree=new AmbiguityTree(list("212"));
-		assertEquals(list("20012","212"),TreeTools.pathsToList(tree.getPaths()));
+		assertEquals(list("212","20012"),TreeTools.pathsToList(tree.getPaths()));
 	}
 	
 	//Testing 3 digit number with no zero values
@@ -186,14 +186,14 @@ public class AmbiguityTreeTest {
 	@Test
 	public void testThreeDigitZeroTensZeroUnitsTwoDigitAfterZeroUnitsNextThreeDigit() {
 		AmbiguityTree tree=new AmbiguityTree(list("200","10","300"));
-		assertEquals(list("210300","20010300"),TreeTools.pathsToList(tree.getPaths()));
+		assertEquals(list("20010300","210300"),TreeTools.pathsToList(tree.getPaths()));
 	}
 	
 	//Test 3 digit number with zero tens zero units next number 2 digit with zero units and 2 digit after 
 	@Test
 	public void testThreeDigitZeroTensZeroUnitsTwoDigitAfterZeroUnitsNextTwoDigit() {
 		AmbiguityTree tree=new AmbiguityTree(list("200","10","20"));
-		assertEquals(list("21020","2001020"),TreeTools.pathsToList(tree.getPaths()));
+		assertEquals(list("2001020","21020"),TreeTools.pathsToList(tree.getPaths()));
 	}
 	
 	//Test 3 digit number with zero tens zero units next number 2 digit with zero units and 1 at tens and 1 after 
@@ -221,7 +221,7 @@ public class AmbiguityTreeTest {
 	@Test
 	public void testThreeDigitZeroTensZeroUnitsNextTwoDigitsZeroUnitsNextOneDigitZero() {
 		AmbiguityTree tree=new AmbiguityTree(list("200","10","0"));
-		assertEquals(list("2100","200100"),TreeTools.pathsToList(tree.getPaths()));
+		assertEquals(list("200100","2100"),TreeTools.pathsToList(tree.getPaths()));
 	}
 	private List<String> list(String... strings ){
 		List<String> list=new ArrayList<>();
