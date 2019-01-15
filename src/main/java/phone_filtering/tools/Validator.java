@@ -1,6 +1,7 @@
 package phone_filtering.tools;
 
 public class Validator {
+	
 	private static final String VALID_INPUT_REGEX="(\\d{1,3}\\s)*\\d{1,3}\\s?";
 	
 	// Checks if input is some sets of 1-3 digits separated by one space character
@@ -11,6 +12,9 @@ public class Validator {
 		return false;
 	}
 	
+	
+	//checks if number has 10 or 14 digits and if yes checks if numbers is starting with
+	// to find either 2 or 69 and if yes number is valid
 	public static boolean numberIsValid(String number) {
 			boolean valid=false;
 			if(number.length()==14) {

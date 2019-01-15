@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node<T> {
-	 
+	 //every Node has an Object as data
+	 // in this case String is selected as the only field that needs to be combined
 	 private T data = null;
 	 
+	 //every Node has children of type Node. self-reference  
 	 private List<Node<T>> children = new ArrayList<>();
 	 
 	 

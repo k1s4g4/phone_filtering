@@ -7,20 +7,29 @@ import phone_filtering.model.tree.AmbiguityTree;
 import phone_filtering.tools.Separator;
 
 public class TelephoneNumber {
-	private AmbiguityTree ambiguities;  // all the ambiguities are saved in a tree
+	private AmbiguityTree ambiguityTree;  // all the ambiguities are saved in a tree
 	private List<PossibleNumber> possibleNumbers; // the possible numbers are extracted as paths of the tree
 	
 	public TelephoneNumber(String input) {
-		ambiguities=new AmbiguityTree(Separator.separate(input));
+		ambiguityTree=new AmbiguityTree(Separator.separate(input));
 		generatePossibleNumbers();
 	}
-
-	public AmbiguityTree getAmbiguities() {
-		return ambiguities;
+	
+	// in this method all paths of the ambiguity tree are extracted and transformed into possible numbers
+	private void generatePossibleNumbers() {
+		List<String> list=ambiguityTree.getPathList();
+		possibleNumbers=new ArrayList<>();
+		for(String s:list) {
+			possibleNumbers.add(new PossibleNumber(s));
+		}
 	}
 
-	public void setAmbiguities(AmbiguityTree ambiguities) {
-		this.ambiguities = ambiguities;
+	public AmbiguityTree getAmbiguityTree() {
+		return ambiguityTree;
+	}
+
+	public void setAmbiguityTree(AmbiguityTree ambiguities) {
+		this.ambiguityTree = ambiguities;
 	}
 	
 	public List<PossibleNumber> getPossibleNumbers() {
@@ -31,13 +40,6 @@ public class TelephoneNumber {
 		this.possibleNumbers = possibleNumbers;
 	}
 
-	// in this method all paths of the ambiguity tree are extracted and transformed into possible numbers
-	private void generatePossibleNumbers() {
-		List<String> list=ambiguities.getPathList();
-		possibleNumbers=new ArrayList<>();
-		for(String s:list) {
-			possibleNumbers.add(new PossibleNumber(s));
-		}
-	}
+	
 	
 }

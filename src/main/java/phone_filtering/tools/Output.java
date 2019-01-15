@@ -5,13 +5,22 @@ import java.util.List;
 import phone_filtering.model.PossibleNumber;
 
 public class Output {
+	
+	/*This class was made as a component of a console application
+	 *Its purpose is to print tables of data with the right horizontal alignment 
+	 * */	
+	
 	private static final String MY_TAB="    ";
+	
+	public static void printPossibleNumbers(List<PossibleNumber> possibleNumbers) {
+		printTable(new String[] {"","",""},listToTable(possibleNumbers));
+	}
+	
 	private static void printTable(String[] headers,String[][] table) {
 		int[] maximums=new int[headers.length];
 		for(int i=0; i< headers.length ;i++) {
 			maximums[i]=headers[i].length();
 			for(int j=0;j<table.length;j++) {
-				
 				if(maximums[i]<table[j][i].length()) {
 					maximums[i]=table[j][i].length();
 				}	
@@ -29,9 +38,7 @@ public class Output {
 			
 		}
 		System.out.println(headersLine);
-		
 		//Print table lines
-		
 		for(int i=0;i<table.length;i++) {
 			
 			String line="";
@@ -53,6 +60,7 @@ public class Output {
 		}
 		System.out.println("");
 	}
+	
 	private static String[][] listToTable(List<PossibleNumber> possibleNumbers){
 		String[][] table=new String[possibleNumbers.size()][3];
 		for(int i=0;i<possibleNumbers.size();i++) {
@@ -63,7 +71,5 @@ public class Output {
 		return table;
 	}
 	
-	public static void printPossibleNumbers(List<PossibleNumber> possibleNumbers) {
-		printTable(new String[] {"","",""},listToTable(possibleNumbers));
-	}
+	
 }

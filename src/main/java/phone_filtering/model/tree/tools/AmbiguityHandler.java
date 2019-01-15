@@ -7,7 +7,21 @@ import phone_filtering.model.tree.Node;
 
 public class AmbiguityHandler {
 	
-	public static List<Node<String>> handle(List<String> parts,int digits) {
+	/*
+	 * This class is responsible for taking parts of the input,
+	 *  handling the case of ambiguity that arise from each input,
+	 *  and return the right amount and data of children that must be added
+	 *  to the ambiguity tree.
+	 *  Also in each case the amount of parts that
+	 *  are used is not constant.
+	 * */
+	
+	
+	//the only method that is public in this class is handle()
+	//the others methods are private and handle() calls them
+	//depending on the number of digits of the first part
+	public static List<Node<String>> handle(List<String> parts) {
+		int digits=parts.get(0).length();
 		if(digits==1) {
 			return oneDigit(parts);
 		}else if(digits==2) {
@@ -17,6 +31,11 @@ public class AmbiguityHandler {
 		}
 	}
 	
+	/* 1-DIGIT
+	 * When the first part is one-digit number there are no ambiguities
+	 * only one child must be added to the leafs of the tree
+	 * and only one part must be removed because only one part is used
+	 * */
 	private static List<Node<String>> oneDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
 		add(children,parts.get(0));
@@ -24,6 +43,18 @@ public class AmbiguityHandler {
 		return children;
 	}
 	
+	
+	/* 2-DIGIT
+	 * The first condition in 2 digit numbers is if units are zero.
+	 * If yes then next part is examined 
+	 *    if next part is Not(2-digit or 3-Digit) and Not(zero)  Not(makes 11 or 12 with previous) 
+	 *    	add ambiguities that exist between next and previous to children and remove two from list	
+	 *    else
+	 *    	then just add only first part to children and remove one 
+	 * If no then check if it is 11 or 12
+	 * 	  if yes then add number to children and remove one.
+	 * 	  if no then add ambiguities to children and remove one
+	 * */
 	private static List<Node<String>> twoDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
 		String currentPart=parts.get(0);
@@ -61,7 +92,40 @@ public class AmbiguityHandler {
 
 		return children;
 	}
-	
+	/*3-DIGIT
+	 *The first condition in 2 digit numbers is if units are zero.
+	 * If units are zero then 
+	 * 	  if numbers has no tens
+	 * 		 if number is not last
+	 *       	if next is 3-digit
+	 *       		add number to children and remove one
+	 *          if next is 2 digit
+	 *              if next has zero units
+	 *                 if next number is not last
+	 *                    if Not(number after next is 3 or 2 digit) and Not (next and after next number make 11 or 12)
+	 *                       add two and remove two
+	 *                    else
+	 *                       add four and remove three
+	 *              if next has not zero units
+	 *                 if next is 11 or 12
+	 *                    add four and remove two
+	 *                 else
+	 *                    add two and remove two 
+	 *          if next is 1 digit
+	 *              if is zero add previous to tree and remove one
+	 *              if not zero add two ambiguities and remove two
+	 *    if numbers has tens 
+	 *       if number is not last
+	 *          if Not(next number is 2 or 3 digit) and Not (next number makes 11 or twelve with previous)
+	 *             add four ambiguities and remove two
+	 *          else
+	 *             add two and remove one (next is not used)
+	 * If units are not zero then
+	 *    if number has tens and Not(ends in 11 or 12 )
+	 *       add four ambiguities and remove one.
+	 *    else 
+	 *       add two ambiguities and remove one
+	 * */
 	private static List<Node<String>> threeDigit(List<String> parts) {
 		List<Node<String>> children=new ArrayList<>();
 		Part current=new Part(parts.get(0));

@@ -5,6 +5,14 @@ import java.util.List;
 
 public class Separator {
 	
+	/*This class transforms the input from the initial state to 
+	to the form that is needed for building the ambiguity tree.
+	
+	 1. All zeros that is at first place of 2 or 3 digit number
+		are separated from the number with a space
+	 2.	After that the string become a List with all the numbers but no spaces
+	 */
+	
 	public static List<String> separate(String input) {
 		return Separator.inputToParts(Separator.separateZeros(input));
 	}
@@ -34,7 +42,8 @@ public class Separator {
 		
 	}
 	
-	// Takes the "zero"-separated input and 
+	// Takes the "zero"-separated input and gives back a List of Strings
+	// by cutting input everywhere is space character
 	public static List<String> inputToParts(String input){
 		String[] array=input.split("\\s");
 		List<String> parts=new ArrayList<String>();

@@ -8,7 +8,16 @@ import java.util.List;
 import phone_filtering.model.tree.Node;
 
 public class TreeTools {
-	
+	// to get the paths of the tree recursion is used
+	//this method calls the method below and a list of lists starts from the leafs
+	//and in every list in list of lists every parent of every leaf is added to the first position
+	public static List<List<Node<String>>> getPaths(Node<String> head) {
+        if(head == null) {
+            return new ArrayList<>();
+        } else {
+            return getPaths0(head);
+        }
+    }
     private static List<List<Node<String>>> getPaths0(Node<String> pos) {
         List<List<Node<String>>> retLists = new ArrayList<>();
 
@@ -29,17 +38,8 @@ public class TreeTools {
         return retLists;
     }
 
-    public static List<List<Node<String>>> getPaths(Node<String> head) {
-        if(head == null) {
-            return new ArrayList<>();
-        } else {
-            return getPaths0(head);
-        }
-    }
-    
-    
+    //This method adds some children to every leaf of the tree
     public static void addToLeafs(Node<String> node,List<Node<String>> children) {
-    	
     	if(node.getChildren().isEmpty()) {
     		List<Node<String>> copyOfChildren=new ArrayList<>();
         	for(Node<String> child:children) {
@@ -54,6 +54,8 @@ public class TreeTools {
     	}
     }
     
+    // Collects strings of all nodes in every path to one list of strings
+    // those strings are the numbers with all the ambiguities
     public static List<String> pathsToList(List<List<Node<String>>> paths) {
     	List<String> stringPaths=new ArrayList<>();
     	for(List<Node<String>> path:paths) {
